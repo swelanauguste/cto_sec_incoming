@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>{{incoming.subject}}</h1>
+<hr>
+<form class="col-lg-4 mx-auto"
+    action=""
+    method="post"
+    enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="d-grid pt-2">
+        <button class="btn btn-lg btn-light px-5"
+            type="submit">Update</button>
+    </div>
+</form>
+
+{% endblock content %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<form action=""
+    class="col-lg-4 mx-auto"
+    method="get">
+    <input type="text"
+        name="q"
+        placeholder="Search"
+        class="form-control form-control-lg rounded-pill">
+    <br>
+    <div class="d-flex gap-3">
+        <input type="date"
+            class="form-control form-control-lg rounded-pill"
+            name="date_from"
+            value="{{ date_from }}">
+        <input type="date"
+            class="form-control form-control-lg rounded-pill"
+            name="date_to"
+            value="{{ date_to }}">
+    </div>
+    <p class="text-end mt-2">
+        <a href="/"
+            class="text-light small">Reset</a>
+    </p>
+</form>
+<br>
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="display-4">Incoming</h1>
+    <a class="text-bg-dark fw-bold"
+        href="{% url 'create' %}">Add</a>
+</div>
+<hr>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+<hr>
+<div class="table-responsive">
+    <table class="table table-sm table-hover small">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">REF</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Rec'd date</th>
+                <th scope="col">From</th>
+                <th scope="col">Originally From</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Dated</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for object in object_list %}
+            <tr
+                class="{% if object.conf == True %} table-danger {% elif object.urgent == True %}table-warning {% endif %}">
+                <th scope="row">{{forloop.counter}}</th>
+                <td><a class="text-dark fw-bold"
+                        href="{{object.get_absolute_url}}">{{object.ref|upper}}</a>
+                </td>
+                <td>{{object.subject|truncatechars:30|title}}</td>
+                <td>{{object.received_on}}</td>
+                <td>{{object.received_from|truncatechars:30|title}}</td>
+                <td>{{object.originally_from|truncatechars:30|title}}</td>
+                <td>{{object.contact|truncatechars:30|title}} {{object.phone}}
+                    <a class="text-dark fw-bold"
+                        href="mailto:{{object.email}}">{{object.email|lower}}</a>
+                </td>
+                <td>{{object.letter_dated}}</td>
+            </tr>
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+    <hr>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of
+                {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <hr>
+
+</div>
+{% endblock content %};

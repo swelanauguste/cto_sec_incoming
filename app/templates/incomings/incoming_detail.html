@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="fw-bold">{{object.subject|title}}</h1>
+        <a class="btn btn-lg btn-outline-warning"
+            href="{% url 'update' object.slug %}">Edit</a>
+    </div>
+    <hr>
+    <p><strong>Reference ID: </strong>{{object.ref|upper}}</p>
+    <p><strong>Received: </strong>{{object.received_on}}</p>
+    <p><strong>Subject: </strong>{{object.subject}}</p>
+    <p><strong>Confidential: </strong>{{object.conf|yesno:'Yes,No'}}</p>
+    <p><strong>Urgent: </strong>{{object.urgent|yesno:'Yes,No'}}</p>
+    <p><strong>From: </strong>{{object.received_from}}</p>
+    <p><strong>Originally From: </strong>{{object.originally_from}}</p>
+    <p><strong>Contact: </strong>{{object.contact}} {{object.phone}}
+        <a href="mailto:{{object.email|lower}}">{{object.email|lower}}</a>
+    </p>
+    {% if object.file %}
+    <p><strong>File: </strong><a target="_blank"
+            href="{{object.file.url}}">{{object.file}}</a></p>
+    {% endif %}
+    <p><strong>Note: </strong>{{object.note}}</p>
+    <hr>
+    <a class="btn btn-lg btn-warning"
+        href="{% url 'change-status' object.slug %}">Update status</a>
+    <hr>
+
+    {% for status in object.statuses.all %}
+    <p><strong>Status: </strong>{{status.status|upper}}</p>
+    <p><strong>Date: </strong>{{status.date}}</p>
+
+    {% if status.file %}
+    <p><strong>File: </strong><a target="_blank"
+            href="{{status.file.url}}">{{status.file}}</a></p>
+    {% endif %}
+
+    <p><strong>Note: </strong>{{status.note}}</p>
+    <hr>
+    {% endfor %}
+
+</div>
+{% endblock content %}

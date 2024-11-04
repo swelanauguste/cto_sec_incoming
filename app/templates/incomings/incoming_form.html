@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>Create</h1>
+<hr>
+<form class="col-lg-4 mx-auto"
+    action=""
+    method="post"
+    enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="gap-2 pt-2">
+        <button class="btn btn-lg btn-light px-5"
+            type="submit">Submit</button>
+        <a class="btn btn-lg btn-secondary"
+            href="">Cancel</a>
+    </div>
+</form>
+
+{% endblock content %}
